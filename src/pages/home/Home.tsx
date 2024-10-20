@@ -8,21 +8,39 @@ import useAuth from "../../hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { authLogout } from "../../redux/reducers/authentication";
 import { useNavigate } from "react-router-dom";
+import CryptoJS from "crypto-js";
+import { useEffect, useState } from "react";
 
 const Home = () => {
   const { user } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [username, setUsername] = useState("");
 
   const handleLogout = () => {
     dispatch(authLogout());
     navigate("/");
   };
 
+  // Decrypt data
+  const decryptUserData = (encryptedData: string) => {
+    const bytes = CryptoJS.AES.decrypt(encryptedData, "secret_key");
+    const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
+
+    // Parse the decrypted string back into an object
+    const parsedData = JSON.parse(decryptedData);
+    return parsedData;
+  };
+
+  useEffect(() => {
+    const data = decryptUserData(user as string);
+    setUsername(data?.username);
+  }, []);
+
   return (
     <main className="home">
       <header>
-        <h4>Welcome, {user?.username}</h4>
+        <h4>Welcome, {username}</h4>
         <button onClick={handleLogout}>Logout</button>
       </header>
 

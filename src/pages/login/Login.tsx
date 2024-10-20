@@ -6,6 +6,7 @@ import useAuth from "../../hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { authenticateUser } from "../../redux/reducers/authentication";
 import { toast } from "react-toastify";
+import { encryptData, findMatchingUser } from "../../crypto";
 
 const Login = () => {
   const { registeredUsers } = useAuth();
@@ -65,29 +66,24 @@ const Login = () => {
       return;
     }
 
-    // Check if user already exists
-    const isUserRegistered = registeredUsers.some((user) => {
-      return user.username === formData.username;
-    });
+    const matchingUser = findMatchingUser(registeredUsers, formData);
 
-    const user = registeredUsers.find(
-      (user) => user.username === formData.username
-    );
-
-    if (isUserRegistered) {
-      if (!(formData.password === user?.password)) {
+    if (matchingUser) {
+      if (!(matchingUser?.password === formData?.password)) {
         toast.error("Invalid credentials");
         return;
       }
 
       // Proceed with form submission
       toast.success("Login successful");
-      dispatch(
-        authenticateUser({
-          username: formData.username,
-          password: formData.password,
-        })
-      );
+
+      // Encrypt login data before storing
+      const encryptedData = encryptData({
+        username: formData.username,
+        password: formData.password,
+      });
+
+      dispatch(authenticateUser(encryptedData as string));
 
       // Clear form
       setFormData({
@@ -100,6 +96,7 @@ const Login = () => {
       return;
     }
   };
+
   return (
     <AuthLayout>
       <div className="login">

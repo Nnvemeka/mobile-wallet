@@ -138,6 +138,22 @@ const DataPayment = ({ title }: DataPaymentProps) => {
             name="phone"
             value={phone}
             onChange={handleInputChange}
+            onKeyUp={(e) => {
+              if (!/^\d+$/.test(e.key)) {
+                e.preventDefault();
+              }
+            }}
+            onKeyDown={(e) => {
+              if (!/^\d+$/.test(e.key)) {
+                e.preventDefault();
+              }
+            }}
+            onPaste={(e) => {
+              const pastedData = e.clipboardData.getData("Text");
+              if (!/^\d+$/.test(pastedData)) {
+                e.preventDefault();
+              }
+            }}
           />
           {formError.phone && (
             <p className="error-message">{formError.phone}</p>

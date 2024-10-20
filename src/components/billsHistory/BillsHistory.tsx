@@ -26,7 +26,7 @@ const BillsHistory = ({ bills }: BillsProps) => {
           {bills?.length === 0 ? (
             <tr>
               <td colSpan={5} style={{ textAlign: "center" }}>
-                No airtime history available.
+                No bills history available.
               </td>
             </tr>
           ) : (

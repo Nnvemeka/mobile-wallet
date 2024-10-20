@@ -6,44 +6,32 @@ interface AuthUsers {
   password: string;
 }
 
-interface RegisteredUsers extends AuthUsers {
-  email: string;
-  phone: string;
-}
-
 interface Authentication {
   authUsers: AuthUsers[];
-  registeredUsers: RegisteredUsers[];
-  currentUser: AuthUsers;
+  registeredUsers: string[];
+  currentUser: string | undefined;
 }
 
 const initialState: Authentication = {
   authUsers: [],
   registeredUsers: [],
-  currentUser: {
-    username: "",
-    password: "",
-  },
+  currentUser: "",
 };
 
 export const authSlice = createSlice({
   name: "authentication",
   initialState,
   reducers: {
-    registerUser: (state, action: PayloadAction<RegisteredUsers>) => {
+    registerUser: (state, action: PayloadAction<string>) => {
       state.registeredUsers = state.registeredUsers || [];
       state.registeredUsers.push(action.payload);
     },
-    authenticateUser: (state, action: PayloadAction<AuthUsers>) => {
+    authenticateUser: (state, action: PayloadAction<string>) => {
       state.authUsers = state.authUsers || [];
-      state.authUsers.push(action.payload);
       state.currentUser = action.payload;
     },
     authLogout: (state) => {
-      state.currentUser = {
-        username: "",
-        password: "",
-      };
+      state.currentUser = "";
     },
   },
 });

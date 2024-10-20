@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { registerUser } from "../../redux/reducers/authentication";
 import useAuth from "../../hooks/useAuth";
+import { encryptData, findMatchingUser } from "../../crypto";
 
 const Signup = () => {
   const { registeredUsers } = useAuth();
@@ -111,26 +112,25 @@ const Signup = () => {
       return;
     }
 
-    // Check if user already exists
-    const userExists = registeredUsers.some((user) => {
-      return user.phone === formData.phone || user.email === formData.email;
-    });
+    // Find matching user
+    const matchingUser = findMatchingUser(registeredUsers, formData);
 
-    if (userExists) {
+    if (matchingUser) {
       toast.error("User already exists");
       return;
     }
 
     // Proceed with form submission
     toast.success("Sign up successful");
-    dispatch(
-      registerUser({
-        email: formData.email,
-        phone: formData.phone,
-        username: formData.username,
-        password: formData.password,
-      })
-    );
+
+    const encryptedData = encryptData({
+      email: formData.email,
+      phone: formData.phone,
+      username: formData.username,
+      password: formData.password,
+    });
+
+    dispatch(registerUser(encryptedData));
 
     // Clear form
     setFormData({

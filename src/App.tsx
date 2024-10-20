@@ -21,7 +21,9 @@ import Login from "./pages/login/Login";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 
 function App() {
+  // Call the server for mock data
   mockServer();
+
   return (
     <>
       <Provider store={store}>

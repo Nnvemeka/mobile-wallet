@@ -1,0 +1,57 @@
+.layout {
+  height: 100vh;
+}
+
+.layout-container {
+  display: flex;
+  height: 100%;
+}
+
+.layout-form-container {
+  padding: 1rem;
+  width: 30%;
+}
+
+.layout-content-container {
+  background: #18425d;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  width: 70%;
+  color: #fff;
+}
+
+.layout-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+}
+
+.layout-description {
+  font-size: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .layout-content-container {
+    width: 60%;
+  }
+
+  .layout-form-container {
+    width: 40%;
+  }
+
+  .layout-title {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .layout-content-container {
+    display: none;
+  }
+
+  .layout-form-container {
+    width: 100%;
+  }
+}

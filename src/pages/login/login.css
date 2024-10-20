@@ -1,0 +1,42 @@
+.login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.login-wrapper {
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  width: 100%;
+  gap: 1.5rem;
+}
+
+.login-header {
+  display: none;
+}
+
+.login-header h2 {
+  text-align: center;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login-footer {
+  display: flex;
+  gap: 0.2rem;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .login-header {
+    display: block;
+  }
+}

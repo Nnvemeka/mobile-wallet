@@ -1,0 +1,27 @@
+.transaction-history {
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.history-tabs-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.active {
+  background: #18425d;
+  color: #fff;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  padding: 0.8rem;
+}
+
+.tab {
+  border: 1px solid #18425d;
+  color: #18425d;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  padding: 0.8rem;
+}

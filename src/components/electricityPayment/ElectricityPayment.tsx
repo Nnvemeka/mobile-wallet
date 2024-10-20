@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { addBillsHistory } from "../../redux/reducers/transactionHistory";
+import useWallet from "../../hooks/useWallet";
+import { debitWallet } from "../../redux/reducers/wallet";
 
 interface ElectricityPaymentProps {
   title: string;
@@ -9,6 +11,7 @@ interface ElectricityPaymentProps {
 
 const ElectricityPayment = ({ title }: ElectricityPaymentProps) => {
   const dispatch = useDispatch();
+  const { walletBalance } = useWallet();
 
   const [formData, setFormData] = useState({
     cardNumber: "",
@@ -65,6 +68,13 @@ const ElectricityPayment = ({ title }: ElectricityPaymentProps) => {
     if (!validateForm()) {
       return;
     }
+
+    // Check if user has enough balance
+    if (Number(formData.amount) > walletBalance) {
+      toast.error("Insufficient balance");
+      return;
+    }
+
     // Proceed with form submission
     toast.success(`Successful`);
     dispatch(
@@ -75,6 +85,7 @@ const ElectricityPayment = ({ title }: ElectricityPaymentProps) => {
         description: `${title} utility subscription`,
       })
     );
+    dispatch(debitWallet(Number(formData?.amount)));
 
     // Clear form
     setFormData({

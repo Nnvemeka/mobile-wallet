@@ -3,6 +3,8 @@ import useBills from "../../hooks/useBills";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { addBillsHistory } from "../../redux/reducers/transactionHistory";
+import useWallet from "../../hooks/useWallet";
+import { debitWallet } from "../../redux/reducers/wallet";
 
 interface CablePaymentProps {
   title: string;
@@ -10,6 +12,8 @@ interface CablePaymentProps {
 
 const CablePayment = ({ title }: CablePaymentProps) => {
   const { TVPackages } = useBills();
+  const { walletBalance } = useWallet();
+
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
@@ -83,6 +87,13 @@ const CablePayment = ({ title }: CablePaymentProps) => {
     if (!validateForm()) {
       return;
     }
+
+    // Check if user has enough balance
+    if (Number(formData.amount) > walletBalance) {
+      toast.error("Insufficient balance");
+      return;
+    }
+
     // Proceed with form submission
     toast.success(`${title} subscription successful`);
     dispatch(
@@ -93,6 +104,7 @@ const CablePayment = ({ title }: CablePaymentProps) => {
         description: `${title} subscription`,
       })
     );
+    dispatch(debitWallet(Number(formData?.amount)));
 
     // Clear form
     setFormData({

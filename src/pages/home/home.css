@@ -9,10 +9,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid #1b5574;
 }
 
 .home header h4 {
-  font-size: 2rem;
+  font-size: 1.6rem;
 }
 
 .home header button {
@@ -20,12 +21,30 @@
   color: red;
 }
 
+.wallet-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.home-text {
+  font-size: 1rem;
+}
+
+.wallet {
+  display: flex;
+  gap: 5px;
+}
+
 .home-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* height: 100%; */
   gap: 2rem;
+}
+
+.home-container h1 {
+  font-size: 1.6rem;
 }
 
 .home-content {
@@ -107,5 +126,12 @@
   .home-card-description {
     font-size: 1rem;
     font-weight: 400;
+  }
+}
+
+@media (max-width: 420px) {
+  .wallet-container {
+    align-items: start;
+    flex-direction: column;
   }
 }

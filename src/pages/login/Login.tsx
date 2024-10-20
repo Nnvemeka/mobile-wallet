@@ -6,7 +6,7 @@ import useAuth from "../../hooks/useAuth";
 import { useDispatch } from "react-redux";
 import { authenticateUser } from "../../redux/reducers/authentication";
 import { toast } from "react-toastify";
-import { encryptData, findMatchingUser } from "../../crypto";
+import { encryptData, findMatchingUser } from "../../utils";
 
 const Login = () => {
   const { registeredUsers } = useAuth();

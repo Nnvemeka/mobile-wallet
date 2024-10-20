@@ -13,6 +13,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import billsPayment from "./reducers/billsPayment";
 import transactionHistory from "./reducers/transactionHistory";
 import authentication from "./reducers/authentication";
+import wallet from "./reducers/wallet";
 
 const persistConfig = {
   key: "root",
@@ -24,6 +25,7 @@ const reducers = combineReducers({
   authentication,
   billsPayment,
   transactionHistory,
+  wallet,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducers);

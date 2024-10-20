@@ -3,6 +3,8 @@ import useBills from "../../hooks/useBills";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { addBillsHistory } from "../../redux/reducers/transactionHistory";
+import { debitWallet } from "../../redux/reducers/wallet";
+import useWallet from "../../hooks/useWallet";
 
 interface DataPaymentProps {
   title: string;
@@ -10,6 +12,8 @@ interface DataPaymentProps {
 
 const DataPayment = ({ title }: DataPaymentProps) => {
   const { dataPackages } = useBills();
+  const { walletBalance } = useWallet();
+
   const dispatch = useDispatch();
   const regexPhone = /^[0][7-9][0-1][0-9]{4}[0-9]{4}$/g;
 
@@ -87,6 +91,13 @@ const DataPayment = ({ title }: DataPaymentProps) => {
     if (!validateForm()) {
       return;
     }
+
+    // Check if user has enough balance
+    if (Number(formData.amount) > walletBalance) {
+      toast.error("Insufficient balance");
+      return;
+    }
+
     // Proceed with form submission
     toast.success(`${title} data subscription successful`);
     dispatch(
@@ -97,6 +108,7 @@ const DataPayment = ({ title }: DataPaymentProps) => {
         description: `${formData?.amount} data plan`,
       })
     );
+    dispatch(debitWallet(Number(formData?.amount)));
 
     // Clear form
     setFormData({
@@ -138,22 +150,6 @@ const DataPayment = ({ title }: DataPaymentProps) => {
             name="phone"
             value={phone}
             onChange={handleInputChange}
-            onKeyUp={(e) => {
-              if (!/^\d+$/.test(e.key)) {
-                e.preventDefault();
-              }
-            }}
-            onKeyDown={(e) => {
-              if (!/^\d+$/.test(e.key)) {
-                e.preventDefault();
-              }
-            }}
-            onPaste={(e) => {
-              const pastedData = e.clipboardData.getData("Text");
-              if (!/^\d+$/.test(pastedData)) {
-                e.preventDefault();
-              }
-            }}
           />
           {formError.phone && (
             <p className="error-message">{formError.phone}</p>

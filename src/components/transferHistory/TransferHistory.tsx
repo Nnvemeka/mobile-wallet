@@ -1,3 +1,5 @@
+import { formatAmount } from "../../utils";
+
 interface Transfer {
   bankName: string;
   accountNumber: string;
@@ -49,7 +51,7 @@ const TransferHistory = ({ transferHistory }: TransferHistoryProps) => {
                   )}
                 </td>
                 <td>{transaction.narration}</td>
-                <td>{transaction.amount}</td>
+                <td>{formatAmount(transaction.amount)}</td>
               </tr>
             ))
           )}

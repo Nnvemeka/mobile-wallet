@@ -1,3 +1,5 @@
+import { formatAmount } from "../../utils";
+
 interface Bills {
   name: string;
   price: number;
@@ -46,7 +48,7 @@ const BillsHistory = ({ bills }: BillsProps) => {
                     }
                   )}
                 </td>
-                <td>{transaction.price}</td>
+                <td>{formatAmount(transaction.price)}</td>
               </tr>
             ))
           )}

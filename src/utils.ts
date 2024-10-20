@@ -40,3 +40,13 @@ export const findMatchingUser = (
   }
   return null;
 };
+
+export const formatAmount = (amount: number) => {
+  const CURRENCY_FORMATTER = Intl.NumberFormat(`en-NG`, {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 0,
+  });
+
+  return `${CURRENCY_FORMATTER.format(amount)}`;
+};

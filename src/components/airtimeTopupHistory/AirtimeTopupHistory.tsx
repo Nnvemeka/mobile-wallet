@@ -1,3 +1,5 @@
+import { formatAmount } from "../../utils";
+
 interface AirtimeTopup {
   name: string;
   phone: string;
@@ -46,7 +48,7 @@ const AirtimeTopupHistory = ({ airtimeTopup }: AirtimeTopupProps) => {
                     }
                   )}
                 </td>
-                <td>{transaction.amount}</td>
+                <td>{formatAmount(transaction.amount)}</td>
               </tr>
             ))
           )}

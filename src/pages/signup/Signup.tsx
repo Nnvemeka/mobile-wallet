@@ -6,7 +6,8 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { registerUser } from "../../redux/reducers/authentication";
 import useAuth from "../../hooks/useAuth";
-import { encryptData, findMatchingUser } from "../../crypto";
+import { encryptData, findMatchingUser } from "../../utils";
+import { creditWallet } from "../../redux/reducers/wallet";
 
 const Signup = () => {
   const { registeredUsers } = useAuth();
@@ -121,8 +122,6 @@ const Signup = () => {
     }
 
     // Proceed with form submission
-    toast.success("Sign up successful");
-
     const encryptedData = encryptData({
       email: formData.email,
       phone: formData.phone,
@@ -131,6 +130,13 @@ const Signup = () => {
     });
 
     dispatch(registerUser(encryptedData));
+    dispatch(creditWallet(20000));
+    toast.success(
+      <div>
+        Sign up successful <br /> ₦20,000 has been creditted to your wallet as
+        sign up bonus!
+      </div>
+    );
 
     // Clear form
     setFormData({

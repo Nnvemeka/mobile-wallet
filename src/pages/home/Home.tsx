@@ -10,9 +10,12 @@ import { authLogout } from "../../redux/reducers/authentication";
 import { useNavigate } from "react-router-dom";
 import CryptoJS from "crypto-js";
 import { useEffect, useState } from "react";
+import { formatAmount } from "../../utils";
+import useWallet from "../../hooks/useWallet";
 
 const Home = () => {
   const { user } = useAuth();
+  const { walletBalance } = useWallet();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
@@ -45,7 +48,13 @@ const Home = () => {
       </header>
 
       <div className="home-container">
-        <h1>Mobile Wallet</h1>
+        <div className="wallet-container">
+          <h1 className="home-text">Mobile Wallet</h1>
+          <div className="wallet">
+            <h3 className="">Balance: </h3>
+            <h3>{formatAmount(walletBalance)}</h3>
+          </div>
+        </div>
         <div className="home-content">
           <HomeCard
             href="/transfer"

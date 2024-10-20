@@ -7,6 +7,8 @@ import SkeletonLoader from "../../components/skeletonLoader/SkeletonLoader";
 import { toast } from "react-toastify";
 import { addAirtimeHistory } from "../../redux/reducers/transactionHistory";
 import { useDispatch } from "react-redux";
+import { debitWallet } from "../../redux/reducers/wallet";
+import useWallet from "../../hooks/useWallet";
 
 interface NetworkProvider {
   name: string;
@@ -21,6 +23,7 @@ const AirtimeTopUp = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const dispatch = useDispatch();
+  const { walletBalance } = useWallet();
 
   const regexPhone = /^[0][7-9][0-1][0-9]{4}[0-9]{4}$/g;
 
@@ -101,6 +104,13 @@ const AirtimeTopUp = () => {
     if (!validateForm()) {
       return;
     }
+
+    // Check if user has enough balance
+    if (Number(formData.amount) > walletBalance) {
+      toast.error("Insufficient balance");
+      return;
+    }
+
     // Proceed with form submission
     toast.success("Airtime top up successful");
     dispatch(
@@ -111,6 +121,7 @@ const AirtimeTopUp = () => {
         transactionDate: new Date().toLocaleString(),
       })
     );
+    dispatch(debitWallet(Number(formData?.amount)));
 
     // Clear form
     setFormData({

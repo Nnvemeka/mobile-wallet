@@ -6,6 +6,8 @@ import "./transfer.css";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { addTransferHistory } from "../../redux/reducers/transactionHistory";
+import useWallet from "../../hooks/useWallet";
+import { debitWallet } from "../../redux/reducers/wallet";
 
 interface BankList {
   name: string;
@@ -29,6 +31,7 @@ const Transfer = () => {
     narration: "",
   });
   const dispatch = useDispatch();
+  const { walletBalance } = useWallet();
 
   const { bankCode, accountNumber, amount, narration } = formData;
 
@@ -96,6 +99,13 @@ const Transfer = () => {
     if (!validateForm()) {
       return;
     }
+
+    // Check if user has enough balance
+    if (Number(formData.amount) > walletBalance) {
+      toast.error("Insufficient balance");
+      return;
+    }
+
     // Proceed with form submission
     toast.success("Bank transfer successful");
     dispatch(
@@ -107,6 +117,7 @@ const Transfer = () => {
         amount: parseFloat(formData?.amount),
       })
     );
+    dispatch(debitWallet(Number(formData?.amount)));
 
     // Clear form
     setFormData({
@@ -124,7 +135,7 @@ const Transfer = () => {
         <div className="page-header-container">
           <div className="page-header">
             <GrTransaction color="#e92a2a" size={"42px"} />
-            <h1>Transfer</h1>
+            <h1>Money Transfer</h1>
           </div>
           <p>
             Easily send money to friends and family with your mobile wallet.

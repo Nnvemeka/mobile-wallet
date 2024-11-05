@@ -14,7 +14,7 @@ export const encryptData = (value: any) => {
 export const decryptExistingData = (encryptedData: string) => {
   const bytes = CryptoJS.AES.decrypt(encryptedData, "secret_key");
   const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
-  return JSON.parse(decryptedData);
+  return decryptedData ? JSON.parse(decryptedData) : {};
 };
 
 // Find the matching user
